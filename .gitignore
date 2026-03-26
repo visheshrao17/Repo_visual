@@ -1,0 +1,64 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Packaging / build artifacts
+build/
+dist/
+.eggs/
+*.egg-info/
+*.egg
+pip-wheel-metadata/
+
+# Test / tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs/
+
+# VS Code
+.vscode/
+
+# Alembic / database artifacts
+backend/alembic/versions/__pycache__/
+
+# Local sqlite files (if used for local dev)
+*.sqlite3
+*.db
+
+# Docker
+*.pid
+*.seed
+
+# Node artifacts (if frontend is added later)
+node_modules/
+.next/
+out/
