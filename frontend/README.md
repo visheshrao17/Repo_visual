@@ -1,73 +1,102 @@
-# React + TypeScript + Vite
+# Repository + DevOps + CI/CD Visualizer Platform (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Production-ready React frontend for repository monitoring, CI/CD pipeline graph visualization, workflow operations, and log inspection.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React + Vite
+- TypeScript
+- Tailwind CSS
+- React Router DOM
+- Axios
+- TanStack Query (React Query)
+- Zustand
+- React Flow
+- Headless reusable UI components
+- xterm.js
 
-## React Compiler
+## Environment Variables
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Create and edit `.env`:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_API_BASE_URL=http://localhost:8000
+VITE_APP_NAME=Repository + DevOps + CI/CD Visualizer
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Install and Run
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+## Routes
+
+- `/login`
+- `/dashboard`
+- `/repo/:repoId`
+- `/repo/:repoId/pipeline`
+- `/run/:runId/logs`
+
+All routes except `/login` are protected.
+
+## Authentication Flow
+
+1. User clicks **Login with GitHub**.
+2. Frontend redirects to `${VITE_API_BASE_URL}/auth/github/login`.
+3. Backend handles GitHub OAuth and returns JWT via callback response.
+4. JWT is stored in localStorage and sent in `Authorization: Bearer <token>` through Axios interceptor.
+
+## Features
+
+- Repository list dashboard with search, sync, and pagination.
+- Repository detail page with workflows, runs, statuses, and manual trigger support.
+- Pipeline graph view with React Flow nodes and edges (`build -> test -> deploy` style), zoom, pan, and node click handling.
+- Logs page with xterm.js terminal rendering and regex-based error highlighting.
+- Dark mode support with persisted preference.
+- Real-time data refresh via polling on runs, graph, and logs.
+- Loading skeletons and consistent error states.
+
+## Folder Structure
+
+```text
+frontend/
+├── src/
+│   ├── main.tsx
+│   ├── App.tsx
+│   ├── routes/
+│   ├── pages/
+│   ├── components/
+│   │   ├── ui/
+│   │   ├── layout/
+│   │   ├── pipeline/
+│   │   ├── logs/
+│   ├── services/
+│   ├── hooks/
+│   ├── store/
+│   ├── types/
+│   ├── utils/
+│   ├── constants/
+├── index.html
+├── package.json
+├── tsconfig.json
+└── .env
+```
+
+## API Integration Notes
+
+- Pagination is mapped to backend `PaginatedResponse` shape: `items + meta`.
+- Pipeline graph endpoint expects `{ nodes, edges }` and is transformed into React Flow elements.
+- Retry and global request error handling are configured in React Query and Axios.
+
+## Production Notes
+
+- Keep `VITE_API_BASE_URL` pointed to your deployed API domain.
+- For OAuth in production, ensure GitHub app callback URL and backend redirect URI are correctly configured.
