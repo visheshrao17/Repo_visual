@@ -2,42 +2,42 @@ export type UUID = string
 
 export interface User {
   id: UUID
-  github_id: string
+  githubId: string
   username: string
   email: string | null
-  avatar_url: string | null
-  created_at: string
+  avatarUrl: string | null
+  createdAt: string
 }
 
 export interface Repository {
   id: UUID
-  user_id: UUID
-  repo_name: string
+  userId: UUID
+  repoName: string
   owner: string
-  repo_url: string
-  is_private: boolean
-  created_at: string
+  repoUrl: string
+  isPrivate: boolean
+  createdAt: string
 }
 
 export interface Workflow {
   id: UUID
-  repo_id: UUID
-  github_workflow_id: string
+  repoId: UUID
+  githubWorkflowId: string
   name: string
   state: string
-  created_at: string
+  createdAt: string
 }
 
 export interface WorkflowRun {
   id: UUID
-  workflow_id: UUID
-  github_run_id: string
+  workflowId: UUID
+  githubRunId: string
   status: string | null
   conclusion: string | null
   branch: string | null
-  commit_sha: string | null
-  started_at: string | null
-  completed_at: string | null
+  commitSha: string | null
+  startedAt: string | null
+  completedAt: string | null
 }
 
 export interface JobGraphNode {
@@ -57,9 +57,9 @@ export interface JobGraphResponse {
 
 export interface RunLog {
   id: UUID
-  run_id: UUID
+  runId: UUID
   content: string
-  created_at: string
+  createdAt: string
 }
 
 export type StatusType = 'success' | 'failure' | 'running' | 'queued' | 'neutral'

@@ -15,17 +15,17 @@ export function RepoCard({ repo, onOpen }: RepoCardProps) {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h3 className="text-lg font-bold text-white">
-            {repo.owner}/{repo.repo_name}
+            {repo.owner}/{repo.repoName}
           </h3>
-          <p className="mt-1 text-sm text-slate-300">Updated {formatDate(repo.created_at)}</p>
+          <p className="mt-1 text-sm text-slate-300">Updated {formatDate(repo.createdAt)}</p>
         </div>
         <div className="inline-flex items-center gap-1 rounded-full border border-white/20 px-2 py-1 text-xs text-slate-300">
-          {repo.is_private ? <Lock className="size-3" /> : <Globe2 className="size-3" />}
-          {repo.is_private ? 'Private' : 'Public'}
+          {repo.isPrivate ? <Lock className="size-3" /> : <Globe2 className="size-3" />}
+          {repo.isPrivate ? 'Private' : 'Public'}
         </div>
       </div>
       <div className="mt-4 flex items-center justify-between">
-        <a href={repo.repo_url} target="_blank" rel="noreferrer" className="text-sm text-cyan-300 hover:text-cyan-200">
+        <a href={repo.repoUrl} target="_blank" rel="noreferrer" className="text-sm text-cyan-300 hover:text-cyan-200">
           Open on GitHub
         </a>
         <Button className="text-xs" onClick={() => onOpen(repo)}>

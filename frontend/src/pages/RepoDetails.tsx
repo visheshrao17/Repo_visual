@@ -30,7 +30,7 @@ export default function RepoDetails() {
   const latestRunByWorkflow = useMemo(() => {
     const map = new Map<string, WorkflowRun>()
     for (const run of runsQuery.data?.items ?? []) {
-      if (!map.has(run.workflow_id)) map.set(run.workflow_id, run)
+      if (!map.has(run.workflowId)) map.set(run.workflowId, run)
     }
     return map
   }, [runsQuery.data?.items])
@@ -53,7 +53,7 @@ export default function RepoDetails() {
         <div>
           <h2 className="text-2xl font-bold text-white">Repository Details</h2>
           <p className="text-sm text-slate-300">
-            {selectedRepo ? `${selectedRepo.owner}/${selectedRepo.repo_name}` : repoId}
+            {selectedRepo ? `${selectedRepo.owner}/${selectedRepo.repoName}` : repoId}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -75,8 +75,8 @@ export default function RepoDetails() {
         {runsQuery.data?.items.map((run) => (
           <div key={run.id} className="grid gap-2 rounded-lg border border-white/10 p-3 md:grid-cols-[1fr_auto_auto] md:items-center">
             <div>
-              <p className="text-sm font-semibold text-white">Run #{run.github_run_id}</p>
-              <p className="text-xs text-slate-300">Started: {formatDate(run.started_at)}</p>
+              <p className="text-sm font-semibold text-white">Run #{run.githubRunId}</p>
+              <p className="text-xs text-slate-300">Started: {formatDate(run.startedAt)}</p>
             </div>
             <StatusBadge status={run.status} conclusion={run.conclusion} />
             <div className="flex gap-2">

@@ -42,7 +42,7 @@ export default function PipelineView() {
           >
             {(runsQuery.data?.items ?? []).map((run) => (
               <option key={run.id} value={run.id}>
-                Run #{run.github_run_id}
+                Run #{run.githubRunId}
               </option>
             ))}
           </select>

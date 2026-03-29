@@ -22,7 +22,7 @@ export function WorkflowCard({ workflow, latestRun, onTrigger }: WorkflowCardPro
       </div>
 
       <div className="text-xs text-slate-300">
-        Last run: {latestRun ? formatDate(latestRun.started_at) : 'No runs yet'}
+        Last run: {latestRun ? formatDate(latestRun.startedAt) : 'No runs yet'}
       </div>
 
       <Button variant="outline" className="w-full" onClick={() => onTrigger(workflow.id)}>

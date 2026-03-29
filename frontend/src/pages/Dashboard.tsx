@@ -39,7 +39,7 @@ export default function Dashboard() {
     const list = reposQuery.data?.items ?? []
     if (!search.trim()) return list
     const query = search.trim().toLowerCase()
-    return list.filter((repo) => `${repo.owner}/${repo.repo_name}`.toLowerCase().includes(query))
+    return list.filter((repo) => `${repo.owner}/${repo.repoName}`.toLowerCase().includes(query))
   }, [reposQuery.data?.items, search])
 
   return (
@@ -97,11 +97,11 @@ export default function Dashboard() {
         <Button variant="outline" onClick={() => setPage((value) => Math.max(1, value - 1))} disabled={page === 1}>
           Previous
         </Button>
-        <span className="text-sm text-slate-200">Page {reposQuery.data?.meta.page ?? page}</span>
+        <span className="text-sm text-slate-200">Page {reposQuery.data?.page ?? page}</span>
         <Button
           variant="outline"
           onClick={() => setPage((value) => value + 1)}
-          disabled={Boolean(reposQuery.data && page >= reposQuery.data.meta.total_pages)}
+          disabled={Boolean(reposQuery.data && page >= Math.ceil(reposQuery.data.total / reposQuery.data.pageSize))}
         >
           Next
         </Button>

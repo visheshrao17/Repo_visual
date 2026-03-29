@@ -1,13 +1,8 @@
-export interface PageMeta {
-  page: number
-  per_page: number
-  total: number
-  total_pages: number
-}
-
 export interface PaginatedResponse<T> {
+  page: number
+  pageSize: number
+  total: number
   items: T[]
-  meta: PageMeta
 }
 
 export interface AuthResponse {
