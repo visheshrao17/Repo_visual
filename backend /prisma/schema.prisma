@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+   url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id          String       @id @default(uuid())
+  githubId    String       @unique
+  username    String
+  email       String
+  avatarUrl   String
+  accessToken String
+  createdAt   DateTime     @default(now())
+  repositories Repository[]
+}
+
+model Repository {
+  id         String      @id @default(uuid())
+  userId     String
+  repoName   String
+  owner      String
+  repoUrl    String
+  isPrivate  Boolean
+  createdAt  DateTime    @default(now())
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workflows  Workflow[]
+
+  @@unique([userId, owner, repoName])
+}
+
+model Workflow {
+  id               String        @id @default(uuid())
+  repoId           String
+  githubWorkflowId String
+  name             String
+  state            String
+  createdAt        DateTime      @default(now())
+  repository       Repository    @relation(fields: [repoId], references: [id], onDelete: Cascade)
+  runs             WorkflowRun[]
+
+  @@unique([repoId, githubWorkflowId])
+}
+
+model WorkflowRun {
+  id          String      @id @default(uuid())
+  workflowId  String
+  githubRunId String
+  status      String
+  conclusion  String?
+  branch      String
+  commitSha   String
+  startedAt   DateTime
+  completedAt DateTime?
+  workflow    Workflow    @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  jobs        Job[]
+  logs        Log[]
+
+  @@unique([workflowId, githubRunId])
+}
+
+model Job {
+  id          String       @id @default(uuid())
+  runId       String
+  githubJobId String
+  name        String
+  status      String
+  conclusion  String?
+  startedAt   DateTime
+  completedAt DateTime?
+  run         WorkflowRun  @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@unique([runId, githubJobId])
+}
+
+model Log {
+  id        String      @id @default(uuid())
+  runId     String
+  content   Json
+  createdAt DateTime    @default(now())
+  run       WorkflowRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+}

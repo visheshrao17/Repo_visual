@@ -1,7 +1,6 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Github } from 'lucide-react'
 import { api } from '@/services/api'
 import { useAuthStore } from '@/store/authStore'
 import { useToastStore } from '@/store/toastStore'
@@ -21,11 +20,12 @@ export default function Login() {
 
   const code = params.get('code')
   const tokenFromQuery = params.get('token')
+  const hasCalledCodeRef = useRef(false)
 
   const callbackMutation = useMutation({
     mutationFn: api.exchangeGithubCode,
     onSuccess: (response) => {
-      setToken(response.access_token)
+      setToken(response.token)
       pushToast({ title: 'Authentication successful', type: 'success' })
       navigate('/dashboard', { replace: true })
     },
@@ -50,7 +50,8 @@ export default function Login() {
       return
     }
 
-    if (code && !callbackMutation.isPending && !callbackMutation.isSuccess) {
+    if (code && !hasCalledCodeRef.current) {
+      hasCalledCodeRef.current = true
       callbackMutation.mutate(code)
     }
   }, [
@@ -80,7 +81,6 @@ export default function Login() {
           }}
           disabled={callbackMutation.isPending}
         >
-          <Github className="size-4" />
           Login with GitHub
         </Button>
       </div>

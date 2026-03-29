@@ -6,7 +6,6 @@ import { useAuthStore } from '@/store/authStore'
 export function useCurrentUser() {
   const token = useAuthStore((state) => state.token)
   const setUser = useAuthStore((state) => state.setUser)
-  const logout = useAuthStore((state) => state.logout)
 
   return useQuery({
     queryKey: queryKeys.me,

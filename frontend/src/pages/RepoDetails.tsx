@@ -11,6 +11,7 @@ import { useRepoRuns, useRepoWorkflows } from '@/hooks/useRepoDetails'
 import { api } from '@/services/api'
 import { useRepoStore } from '@/store/repoStore'
 import { useToastStore } from '@/store/toastStore'
+import type { WorkflowRun } from '@/types/domain'
 import { formatDate } from '@/utils/date'
 
 const PER_PAGE = 12
@@ -27,7 +28,7 @@ export default function RepoDetails() {
   const runsQuery = useRepoRuns(repoId, 1, PER_PAGE)
 
   const latestRunByWorkflow = useMemo(() => {
-    const map = new Map<string, (typeof runsQuery.data.items)[number]>()
+    const map = new Map<string, WorkflowRun>()
     for (const run of runsQuery.data?.items ?? []) {
       if (!map.has(run.workflow_id)) map.set(run.workflow_id, run)
     }
